@@ -36,3 +36,25 @@ Q1.2
 (/ (+ 5 4 (- 2 (- 3 (+ 6 (/ 4 5))))) (* 3 (- 6 2) (- 2 7)))
 -> -37/150
 
+Q1.3
+Define a procedure that takes three numbers as arguments and returns the sum of the squares of the two larger numbers.
+
+
+```
+(define (dist x y)(+ (sqr x) (sqr y)))
+(define (max_dist x y z)
+    (if (> x y)
+            (if (> y z) (dist x y) (dist x z))
+            (if (> x z) (dist x y) (dist y z))
+     )
+)
+
+e.g
+> (max_dist 1 2 3)
+13
+> (max_dist 4 2 3)
+25
+> (max_dist 4 20 4)
+416
+> (max_dist 4 20 5)
+```
