@@ -67,6 +67,13 @@ otherwise (if b < 0)  take the - operator and returns a + -b
 b>0であれば，+演算子をa，bに適応させa+bを返し，
 b<0であれば，a + -bを返す．
 
+Q1.5
 
+もしapplicative-order evaluationであれば，operandから評価をしていく．
+そのため，(test 0 (p))の0を評価したあとに(p)を評価するが，関数(p)は
+永遠に再帰する関数のため，(test 0 (p))を実行するとループに入る．
 
-
+もしnormal-order evaluationである場合は，実行順に評価さて行く．
+従って，(if (= x 0))が評価されるとtrueを返し，0が評価され，(p)は評価される
+ことなく，終わる．そのためnormal-order-evaluationであると(test 0 (p))の結果は
+0となる．
