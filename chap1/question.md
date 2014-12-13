@@ -58,3 +58,15 @@ e.g
 416
 > (max_dist 4 20 5)
 ```
+
+Q1.4
+if b > 0 then take the + operator and apply to a and b 
+so that it returns the value of a + b
+otherwise (if b < 0)  take the - operator and returns a + -b
+
+b>0であれば，+演算子をa，bに適応させa+bを返し，
+b<0であれば，a + -bを返す．
+
+
+
+
