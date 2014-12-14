@@ -139,6 +139,19 @@ Newton’s method(Newton法):
 
 (define (sqrt-newton x)
     (sqrt-iter 1.0 x))
+
+(define (new-if predicate then-clause else-clause)
+  (cond (predicate then-clause)
+          (else else-clause)))
+
+(define (sqrt-iter-new-if y x)
+    (new-if (good-enough? y x)
+        y
+        (sqrt-iter-new-if (next-guess y x) x)))
+
+(define (sqrt-new x)
+    (sqrt-iter-new-if 1.0 x))
+
 ```
 
 
