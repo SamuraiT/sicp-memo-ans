@@ -15,7 +15,9 @@
 
 
     
-1.1　プログラムの要素
+1.1
+------
+プログラムの要素
     協力なプログラミング言語の特徴
         基本式（premitive expression）単純なもの
         組み合わせ法（means of　combination）複雑なもの（合成物）は単純なものから作られる合成物
@@ -29,7 +31,7 @@
 
    
 1.1.2
-
+------
     プログラム言語の重要な点は,
 名前を使って計算オブジェクトを指す手段を用意すること
 である.これはまさに抽象化である．
@@ -49,7 +51,7 @@ lispのようなインタラクティブな言語では(+ 1 2)のような
 それは，環境がSymbol(記号)に意味を与えているからだ．
 
 1.1.4
-
+-----
 組み合わせた演算（compound operation）に名前を付けて，
 １つのユニットとして扱う抽象化を手続きの定義(procedure definition))と呼ぶ．
 
@@ -61,7 +63,7 @@ defineのような記号は今での評価方法ではなく，違う評価方�
  The <name> is a symbol to be associated with the procedure definition in the environment.
 
 1.1.5
-
+-----
 科学，エンジニアリングの現象をモデル化する場合は，
 単純で不完全なモデルから始める．対象を調べていくうちに，
 単純なモデルは不適切となり，洗練されたモデルで取り替えていく．
@@ -78,7 +80,7 @@ normal-order evaluation(正規順序と呼ぶ)
 これは，重複評価を避けるためである．
 
 1.1.6 Conditional Expressions and Predicates
-
+------
 場合分け（case analysis）
     絶対値を取るような手続きは，数値を評価して，
     返す値を決めるこのような仕組み(構造)をcase analysisという
