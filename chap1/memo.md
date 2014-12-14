@@ -93,4 +93,52 @@ normal-order evaluation(正規順序と呼ぶ)
 
     <e>is consequent expression(帰結式) 
 
+1.1.7 example: square roots by newtons method
+---------
+これまでの手続きは通常の関数のように複数のパラメータから決まる値を定義するものであった．
+しかし，数学の関数とコンピュータの手続きの間には重要な違いがある．
+手続きは結果を生み出さないとならない．
+
+数学では，なにをするかの記述に関心があるが(宣言的知識,declative knowledge)
+コンピュータでは，どうするかの記述するに関心がある(imperative knowledge　命令的知識)
+
+Newton’s method(Newton法):
+目的:xを与えとき平方根√xを求めたい
+
+```
+√xの予測をyとする．
+以下を十分な値が取れるまで繰り返す．
+    1. xとyの商(quotient)を求めるQ = x/y
+    2. 次に，商と予測の平均(average)を求める average = (Q+y)/2
+    3. 平均を予測yとするy = average
+十分な値とは√x=yの時，x - y^2 <= 0.001となるときである．
+つまり，二乗誤差を取った時に0.001以下になればよしとする．
+```
+√xのxをradicand（被開平数）という
+
+```
+(define (next-guess y x)
+    (average (Q y x) y))
+
+(define (Q y x)
+    (/ x y))
+
+(define (average x y)
+    (/ (+ x y) 2))
+
+(define (sqr x)
+    (* x x))
+
+(define (good-enough? y x)
+    (<= (abs (- (sqr y) x)) 0.001))
+
+(define (sqrt-iter y x)
+    (if (good-enough? y x)
+        y
+        (sqrt-iter (next-guess y x) x)))
+
+(define (sqrt-newton x)
+    (sqrt-iter 1.0 x))
+```
+
 
