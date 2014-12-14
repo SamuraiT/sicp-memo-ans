@@ -86,3 +86,75 @@ new-ifを使うと，applicative-order evaluationを利用するので，引数�
 e.g (if (predicate) true-clause false-clause)
 if predicate is true, steatement of if only evaluates true-clause.
 
+Q1.7
+e.g of fail
+(sqrt 4444)
+66.66333325000188)
+should be like this
+sqrt(4444)
+66.66333324999583
+math.sqrt(0.0004)
+0.02
+(sqrt 0.0004)
+0.0354008825558513
+
+math.sqrt(10000000000000)
+3162277.6601683795
+> (sqrt 10000000000000)
+stopped
+```
+(define (sqrt-iter guess x prev-guess)
+  (if (good-enough? guess prev-guess)
+      guess
+      (sqrt-iter (improve guess x)
+    x guess)))
+
+(define (improve guess x)
+  (average guess (/ x guess)))
+
+(define (average x y)
+  (/ (+ x y) 2))
+
+(define (good-enough? guess prev)
+   (< (abs (- guess prev)) 0.001)))
+
+(define (sqrt x)
+    (sqrt-iter 1.0 x 0))
+
+(define (square x)
+    (* x x))
+```
+上記のように修正し，
+> (sqrt 0.0004)
+0.020001426615330147
+> (sqrt 4444)
+66.66333325000188
+が得られた
+> (sqrt 10000000000000)
+3162277.6601683795
+
+もっと賢い奇麗な方法としてgood-enough?だけの変更もある．
+これは，次にimproveしても同じ値であれば停止するようにしている．
+```
+(define (sqrt-iter guess x)
+  (if (good-enough? guess x)
+      guess
+      (sqrt-iter (improve guess x)
+    x)))
+
+(define (improve guess x)
+  (average guess (/ x guess)))
+
+(define (average x y)
+  (/ (+ x y) 2))
+
+(define (good-enough? guess x)
+   (= (improve guess x) guess))
+
+(define (sqrt x)
+    (sqrt-iter 1.0 x))
+
+(define (square x)
+    (* x x))
+```
+
