@@ -77,3 +77,12 @@ Q1.5
 従って，(if (= x 0))が評価されるとtrueを返し，0が評価され，(p)は評価される
 ことなく，終わる．そのためnormal-order-evaluationであると(test 0 (p))の結果は
 0となる．
+
+Q1.6
+new-ifを使うと，applicative-order evaluationを利用するので，引数を
+先に評価してしまう．new-ifの2番目の引数はsqrt-iterなので，再帰呼び出しを
+繰り返し，プログラムは停止しない．
+それに対して，ifはpredicateを評価した後，どちらかの式しか評価しない．
+e.g (if (predicate) true-clause false-clause)
+if predicate is true, steatement of if only evaluates true-clause.
+
