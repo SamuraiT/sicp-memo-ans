@@ -116,6 +116,7 @@ Newton’s method(Newton法):
 ```
 √xのxをradicand（被開平数）という
 
+
 ```
 (define (next-guess y x)
     (average (Q y x) y))
@@ -178,3 +179,59 @@ Newton’s method(Newton法):
     (* x x))
 ```
 
+
+1.1.8 Procedures as Black-Box Abstractions
+------
+sqrtの手続きでは，問題を部分問題(subproblem)と分解(decompose)し手続きの束(procedure
+of cluter)をした．
+ここで，重要なのは部分問題を手続きで表現する事で，ブラックボックスとして扱えることである．
+そうすることで，利用者はその実装を知らなくてよい．また，他の場所でも部品(module)として
+扱う事ができる．また，それらの手続きをprocedual abstractionと呼ぶ．
+
+局所名(local name)
+手続きの仮パラメータ(formal prameter)は手続き定義中で束縛(bind)される．
+そのため，それらの変数は束縛変数(a bound variable)と呼ばれる．
+また，bound variableの有効である範囲をscopeと呼ぶ．
+boudn variableに対して，手続きのscope内で束縛されていない変数をfree
+と呼ぶ．
+
+Internal definition and Block structure(内部定義とブロック構造)
+
+今までは以下のように分けて手続きを定義してきた
+```
+(define (sqrt x)
+  (sqrt-iter 1.0 x))
+(define (sqrt-iter guess x)
+  (if (good-enough? guess x)
+      guess
+      (sqrt-iter (improve guess x) x)))
+(define (good-enough? guess x)
+  (< (abs (- (square guess) x)) 0.001))
+(define (improve guess x)
+  (average guess (/ x guess)))
+```
+
+しかしながら，このsqrtを手続きとして利用する人にとっては，`good-enough?, improve`のような他の手続き(subprocedure)は利用者を悩ませるだけである．
+例えば，同じように近似して何かを導く手続きを利用者は書くとき，既存の`good-enough?`と異なるが同じ名前を使いたい場合がでるかもしれない．
+これは，システムが巨大になるほど深刻な問題となる．
+
+そこで，このようなsubprocedureをsqrtの手続き中に定義することで（＝internal definition内部定義），上記のような問題を防げる．
+手続きを内部定義すると以下のようになる．このように定義をネストさせる構造をブロック構造(Block Structure)と呼ぶ．
+さらに，今まではxを書くsubprocesureの引数として取っていたのをsqrt内で束縛し，subprocedureからは自由変数と見せる事で引数として取る必要をなくした．こうすることでより単純化出来る．このような方法をlexical scoping or static scoping(静的スコープ)と呼ぶ．
+
+```
+(define (sqrt x)
+    (define (square x)(* x x))
+    (define (average x y)(/ (+ x y) 2))
+  (define (good-enough? guess)
+    (< (abs (- (square guess) x)) 0.001))
+  (define (improve guess)
+    (average guess (/ x guess)))
+  (define (sqrt-iter guess)
+    (if (good-enough? guess)
+        guess
+        (sqrt-iter (improve guess))))
+  (sqrt-iter 1.0))
+
+```
+このブロック構造を出来るだけ使うことで，巨大な問題を簡単に扱えるようする．この手法はクラスに似ているように思われる．また，ブロック構造はAlgo60から始まっているそうだ．
