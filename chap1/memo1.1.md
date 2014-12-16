@@ -188,14 +188,15 @@ of cluter)をした．
 そうすることで，利用者はその実装を知らなくてよい．また，他の場所でも部品(module)として
 扱う事ができる．また，それらの手続きをprocedual abstractionと呼ぶ．
 
-局所名(local name)
+#### 局所名(local name)
+
 手続きの仮パラメータ(formal prameter)は手続き定義中で束縛(bind)される．
 そのため，それらの変数は束縛変数(a bound variable)と呼ばれる．
 また，bound variableの有効である範囲をscopeと呼ぶ．
 boudn variableに対して，手続きのscope内で束縛されていない変数をfree
 と呼ぶ．
 
-Internal definition and Block structure(内部定義とブロック構造)
+#### Internal definition and Block structure(内部定義とブロック構造)
 
 今までは以下のように分けて手続きを定義してきた
 ```
