@@ -1,4 +1,6 @@
-Q1.1 Below is a sequence of expressions. What is the result printed by the interpreter in response to each expression? Assume that the sequence is to be evaluated in the order in which it is presented.
+Q1.1
+----
+ Below is a sequence of expressions. What is the result printed by the interpreter in response to each expression? Assume that the sequence is to be evaluated in the order in which it is presented.
 
 
 ```
@@ -32,11 +34,16 @@ b
 ```
 
 Q1.2
+----
 
+```
 (/ (+ 5 4 (- 2 (- 3 (+ 6 (/ 4 5))))) (* 3 (- 6 2) (- 2 7)))
 -> -37/150
+```
 
 Q1.3
+----
+
 Define a procedure that takes three numbers as arguments and returns the sum of the squares of the two larger numbers.
 
 
@@ -60,6 +67,8 @@ e.g
 ```
 
 Q1.4
+-----
+
 if b > 0 then take the + operator and apply to a and b 
 so that it returns the value of a + b
 otherwise (if b < 0)  take the - operator and returns a + -b
@@ -68,7 +77,7 @@ b>0であれば，+演算子をa，bに適応させa+bを返し，
 b<0であれば，a + -bを返す．
 
 Q1.5
-
+---------
 もしapplicative-order evaluationであれば，operandから評価をしていく．
 そのため，(test 0 (p))の0を評価したあとに(p)を評価するが，関数(p)は
 永遠に再帰する関数のため，(test 0 (p))を実行するとループに入る．
@@ -79,6 +88,7 @@ Q1.5
 0となる．
 
 Q1.6
+-----
 new-ifを使うと，applicative-order evaluationを利用するので，引数を
 先に評価してしまう．new-ifの2番目の引数はsqrt-iterなので，再帰呼び出しを
 繰り返し，プログラムは停止しない．
@@ -87,6 +97,9 @@ e.g (if (predicate) true-clause false-clause)
 if predicate is true, steatement of if only evaluates true-clause.
 
 Q1.7
+-----
+
+```
 e.g of fail
 (sqrt 4444)
 66.66333325000188)
@@ -102,6 +115,8 @@ math.sqrt(10000000000000)
 3162277.6601683795
 > (sqrt 10000000000000)
 stopped
+```
+
 ```
 (define (sqrt-iter guess x prev-guess)
   (if (good-enough? guess prev-guess)
@@ -123,7 +138,6 @@ stopped
 
 (define (square x)
     (* x x))
-```
 上記のように修正し，
 > (sqrt 0.0004)
 0.020001426615330147
@@ -132,9 +146,11 @@ stopped
 が得られた
 > (sqrt 10000000000000)
 3162277.6601683795
+```
 
 もっと賢い奇麗な方法としてgood-enough?だけの変更もある．
 これは，次にimproveしても同じ値であれば停止するようにしている．
+
 ```
 (define (sqrt-iter guess x)
   (if (good-enough? guess x)
@@ -161,6 +177,7 @@ stopped
 Q1.8
 cube root(立方根) is denoted as x^(1/3)
 
+```
 (define (cube-iter guess x)
   (if (good-enough? guess x)
       guess
@@ -183,9 +200,11 @@ cube root(立方根) is denoted as x^(1/3)
 (define (square x)
     (* x x))
 ```
-(= (improve guess x) guess))だと時間が掛かりすぎる．
+
+`(= (improve guess x) guess))`だと時間が掛かりすぎる．
 ので，0.0001以内の差とした
 他の回答としては
+
 ```
  (define (improve guess x) 
    (average3 (/ x (square guess)) guess guess)) 
@@ -193,9 +212,11 @@ cube root(立方根) is denoted as x^(1/3)
  (define (average3 x y z) 
    (/ (+ x y z) 3))
 ```
+
+```
 がある．
 上記は
 x/y2, y,y をaverage3に渡し
 それらを平均する
 (x/y2 + y + y)/3
-
+```
