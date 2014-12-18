@@ -26,7 +26,8 @@ counter = product = 1
 loop until counter > 6
     product = product * counter
     counter = counter + 1
-```￼
+```
+￼
 これを実装して，置換置き換えモデルで表現したのがfigure 1.4となる．
 
 これと1.3を比較すると，1.3では処理が進みにつれて，膨張しているのが分かる．
