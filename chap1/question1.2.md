@@ -126,3 +126,5 @@ iterative processの考え方としては，もともとの木構造をよく見
 更新した時に，初期の状態(a, b, c)がどのように遷移するのかを考えれば良い．
 従って，反復プロセスを考える際はまず，tree recursionをから状態変数を決め
 その状態変数がどのように遷移するかを考えれば良い．
+
+[reference](http://www.billthelizard.com/2009/11/sicp-exercise-111.html)
