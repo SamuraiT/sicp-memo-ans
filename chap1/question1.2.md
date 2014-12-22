@@ -186,4 +186,21 @@ this is used as a following:
 1 4 6 4 1
 1 5 10 10 5 1
 ```
+Q1.13
+-----
 
+http://www.kendyck.com/math/sicp/ex1-13.xml
+
+上記のサイトを参考．
+
+```
+Fib(0) = 0
+Fib(n) = Fib(n-1) + Fib(n+2)
+       = (φ^n - ψ^n) / √5
+
+Fib(n+1) = Fib(n) + Fib(n-1)
+       = ((φ^n - ψ^n) / √5) + ((φ^n-1 - ψ^n-1) / √5)
+       = 頑張ると
+       = (φ^n+1 - ψ^n+1) / √5
+       になるらしい
+```
