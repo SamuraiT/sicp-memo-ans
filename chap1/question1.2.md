@@ -128,3 +128,62 @@ iterative processの考え方としては，もともとの木構造をよく見
 その状態変数がどのように遷移するかを考えれば良い．
 
 [reference](http://www.billthelizard.com/2009/11/sicp-exercise-111.html)
+
+Q1.12
+-------
+
+```
+(define (pascal-triangle row col)
+      (cond ((> col row) 0)
+          ((< col 0) 0)
+          ((= col 1) 1)
+          ((+ (pascal-triangle (- row 1) (- col 1)) (pascal-triangle (- row 1) col)))))
+
+(pascal-triangle 3 2)
+2
+
+this counts num from 1 either for col and row.
+```
+
+another answer by using pascals triangle equation.
+(binominal coeffient)
+
+```
+(define (factorial n)
+  (fact-iter 1 1 n))
+(define (fact-iter product counter max-count)
+  (if (> counter max-count)
+      product
+      (fact-iter (* counter product)
+                 (+ counter 1)
+                 max-count)))
+
+(define (comb n m)
+    (/ (factorial n) (* (factorial m) (factorial (- n m)))))
+
+(define (pascal n)
+  (define (display-line n m)
+    (display (comb n m))
+    (display " ")
+    (if (> n m)
+        (display-line n (+ m 1))))
+  (define (iter N)
+    (display-line N 0)
+    (newline)
+    (if (< N n)
+        (iter (+ N 1))
+        )
+    )
+  (iter 0))
+
+this is used as a following:
+
+> (pascal 5)
+1
+1 1
+1 2 1
+1 3 3 1
+1 4 6 4 1
+1 5 10 10 5 1
+```
+
