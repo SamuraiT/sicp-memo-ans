@@ -26,7 +26,8 @@ def average(x, y):
     return (x+y)/2.0
 
 def is_good_enough(guess, x):
-    return abs(guess**2 - x) < 0.0001
+    return abs(improve(guess, x) - guess) < 0.0001
+    #return abs(guess**2 - x) < 0.0001
 
 if __name__ == '__main__':
     main()
