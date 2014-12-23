@@ -119,3 +119,26 @@ tree recursion(木構造再帰)は非効率だが，理解するのは簡単で�
 減らす方法である．これをテーブルか（tabulation），メモ化(memoization)とよぶ．
 これは，木構造を使いつつ，メモリを利用する事で計算スピードを早める事ができる．
 
+1.2.3 Order of Growth
+------
+プロセスによって計算資源（computational　resources）を消費する割合（速度）が違う．
+これを記述するのにorder of growthというのを使うと便利になる．
+*order of growthは入力が大きくなった時に，大体の必要となる資源を見積もるのに役立つ．*
+
+
+nを問題の大きさとする
+R(n)は大きさnの問題に対して,プロセスが必要とする資源の量(amount of resources)とする
+
+R(n)は内部のレジスタがどれだけ使われたかを測ったり,
+実行された機械演算の数だったりする．
+
+一度に決められた数の演算(operations)しかできないコンピュータであれば，
+必要となる時間は実行された機械演算数(number of elementary machine operations)に比例する．
+
+```
+k1*f(n) <= R(n) <= k2*f(n)
+
+のとき，R(n)はθ（f(n)）の程度の増加と言い．
+R(n) = θ（f(n)）と書く．(theta of f(n))
+```
+
