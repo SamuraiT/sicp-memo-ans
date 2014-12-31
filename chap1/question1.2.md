@@ -302,4 +302,33 @@ n = log3(a/0.1)
 スペースも同様に増加するためO(log(n))である．
 ```
 
+Q1.16
+--------
+
+
+```
+(define (square x) (* x x))
+(define (fast-expt b n)
+  (cond ((= n 0) 1)
+        ((even? n) (fast-expt (square b) (/ n 2)))
+        (else (* b (fast-expt b (- n 1))))))
+```
+を反復再帰にすればよい．ヒントとしてnが偶数（even）のとき，$b^n = (b^2)^{n/2}$が与えられている．
+つまり，$b^n$は低(base)を$b^2$として$n/2$乗したものと同じになる．
+従って，次のように解ける．
+```
+(define (square x) (* x x))
+
+(define (even? x)
+  (= (remainder x 2) 0))
+
+(define (fast-expt b n)
+  (define (iter a b n)
+    (cond ((= n 0) a)
+          ((even? n) (iter a (square b) (/ n 2)))
+          (else (iter (* a b) b (- n 1) )))
+          )
+  (iter 1 b n))
+
+```
 
