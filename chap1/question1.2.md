@@ -332,3 +332,24 @@ Q1.16
 
 ```
 
+Q 1.17
+------
+```
+(define (double x) (+ x x))
+(define (halve x) (/ x 2))
+(define (even? x)
+(= (remainder x 2) 0))
+(define (mul a b)
+  (cond ((= b 0) 0)
+     ((= b 1) a)
+     ((even? b) (double (mul a (halve b))))
+     (else (+ a (mul a (- b 1))))
+    )
+  )
+(mul 2 3)
+6
+(mul 4 8)
+32
+(mul 4 8)
+32
+```
