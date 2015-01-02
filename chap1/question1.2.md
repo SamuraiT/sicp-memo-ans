@@ -335,6 +335,13 @@ Q1.16
 Q 1.17
 ------
 ```
+if b is even -> a*b = 2*(a*b/2)
+else -> a*b = a*(b-1)+a
+```
+
+上記を表現すれば良いだけ
+
+```
 (define (double x) (+ x x))
 (define (halve x) (/ x 2))
 (define (even? x)
