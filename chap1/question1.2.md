@@ -64,13 +64,13 @@ Q1.10
 -> 2^2^...*n times
 ```
 
-Exercise 1.11. 
+Exercise 1.11.
 ------------
-A function f is defined by the rule that 
+A function f is defined by the rule that
 
 ```
 f(n) = n if n<3 and
-f(n) = f(n - 1) + 2f(n - 2) + 3f(n - 3) if n> 3. 
+f(n) = f(n - 1) + 2f(n - 2) + 3f(n - 3) if n> 3.
 ```
 
 Write a procedure that computes f by means of a recursive process. Write a procedure that computes f by means of an iterative process.
@@ -250,7 +250,7 @@ n=10ならば，n-5のステップは
 5 - 5 = 0
 よって，2回
 
-if n = 20 then 
+if n = 20 then
 20 - 5 = 15
 15 - 5 = 10
 10 - 5 = 5
@@ -360,3 +360,82 @@ else -> a*b = a*(b-1)+a
 (mul 4 8)
 32
 ```
+
+Q1.18
+-------
+(define (double x) (+ x x))
+(define (halve x) (/ x 2))
+(define (even? x)
+(= (remainder x 2) 0))
+(define (mul a b)
+  (define (iter ans a b)
+      (cond ((= b 0) 0)
+         ((= b 1) ans)
+         ((even? b) (iter (double ans) a (halve b)))
+         (else (iter (+ a ans) a (- b 1)))
+        )
+    )
+    (iter ans a b)
+  )
+
+Q1.19
+------
+久しぶりに問題をとく
+まず，問題で言及されているように，Tpqは変換器である
+つまり，Transformerである．ここで，
+Tpqが特殊なはp=0, q=1といっているまた，そのとき
+
+```
+a = a + b
+b = a
+行列で表すと
+
+(1 1)(a)
+(1 0)(b)
+
+この左側の行列をp, qで表すと
+(p+q q)
+(q   p)
+
+となる．ただし，a = fib(n+1), b = fib(n)であるこに注意
+今，ベクトルvk= (fib(n+1), fib(n))を考えるつまり vk = (a,b)である
+vk+1は
+vk+1 = T*vk
+と表現できる．さらにvk+2は
+vk+2 = T*vk+1 = T^2 * vk
+よって，今回はT^2を求めればよい．
+また，
+T = (p+q q)
+    (q   q)
+なので，
+T^2 = ( (p+q)^2+q  q^2 + 2pq)
+      ( pq+2q^2    q^2 + p^2)
+Tと比べると，
+q = q^2 + 2pq
+p = q^2 + p^2
+となる．
+
+これを問題で提示された式にいれれば良い
+````
+
+
+
+
+
+
+
+
+(define (square x) (* x x))
+(define (fib n) (fib-iter 1 0 0 1 n))
+(define (fib-iter a b p q count) (cond ((= count 0) b)
+        ((even? count)
+         (fib-iter a
+                   b
+                  (+ (square q) (square p))
+                  (+ (square q) (* 2 (* p q)))
+              (/ count 2)))
+              (else (fib-iter (+ (* b q) (* a q) (* a p)) (+ (* b p) (* a q))
+                                p
+                                q
+                                (- count 1)))))
+
