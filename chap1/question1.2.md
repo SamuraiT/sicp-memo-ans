@@ -416,15 +416,6 @@ p = q^2 + p^2
 となる．
 
 これを問題で提示された式にいれれば良い
-````
-
-
-
-
-
-
-
-
 (define (square x) (* x x))
 (define (fib n) (fib-iter 1 0 0 1 n))
 (define (fib-iter a b p q count) (cond ((= count 0) b)
@@ -438,4 +429,62 @@ p = q^2 + p^2
                                 p
                                 q
                                 (- count 1)))))
+
+```
+Q1.20
+-----
+gcdのプロセスをnormal-order-evaluationで処理した場合を図示
+```
+(define (gcd a b)
+  (if (= b 0)
+      a
+  (gcd b (remainder a b))))
+
+if文が来た時に，値を評価し，式を評価する．
+そのため，都度ifでは値が評価されるが，gcdでは，最後まで式が評価されないため
+modのネストとなる．よって，modが評価される回数は18回である．
+（今回は，remainderが長いためmodを利用した）
+
+(gcd 206 40)
+  (if (= 40 0))
+  (gcd 40 (mod 206 40))
+    (if ( = (mod 206 40)  0))
+    (gcd (mod 206 40) (mod (mod 206 40) 40))
+
+  evaluated
+  (if (= 6 0))
+  (gcd (mod 206 40) (mod (mod 206 40) 40))
+      (if (= (mod (mod 206 40) 40) 0)
+      (gcd (mod 40 (mod 206 40)) (mod (mod 206 40) (mod 40 (mod 206 40))))
+  evaluated
+  (if (= 4 0))
+  (gcd (mod 40 (mod 206 40)) (mod (mod 206 40) (mod 40 (mod 206 40))))
+    (if (= (mod (mod 206 40) (mod 40 (mod 206 40))) 0)
+    (gcd (mod (mod 206 40) (mod 40 (mod 206 40))) (mod (mod 40 (mod 206 40)) (mod (mod 206 40) (mod 40 (mod 206 40))))
+
+  evaluated
+  (if (= 2 0))
+   (gcd (mod (mod 40 (mod 206 40)) (mod (mod 206 40) (mod 40 (mod 206 40)))
+   (mod (mod (mod 40 (mod 206 40)) (mod (mod 206 40) (mod 40 (mod 206 40))) (mod (mod 206 40) (mod 40 (mod 206 40))))
+   (if ( = (mod (mod (mod 40 (mod 206 40)) (mod (mod 206 40) (mod 40 (mod 206 40))) (mod (mod 206 40) (mod 40 (mod 206 40))) 0))
+   2
+
+
+
+applicative order-evaluation
+
+applicative-order-evaluationは引数を受け取るたびに，式（mod）を評価するため，
+実行される回数は少ない．そのため，評価は4回しかされない
+
+(gcd 206 40)
+(gcd 40 (mod 206 40))
+  (gcd 40 6)
+(gcd 6 (mod 40 6))
+  (gcd 6 4)
+(gcd 4 (mod 6 4))
+  (gcd 4 2)
+(gcd 2 (mod 4 2))
+  (gcd 2 0)
+2
+```
 
