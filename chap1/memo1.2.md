@@ -210,3 +210,47 @@ gcd(a, b) = gcd(b, a%b)
 ```
 をb==0になるまで繰り返せば良い．
 また，このアルゴリズムはeuclidのアルゴリズムとしても知られている．
+
+1.2.6 testing for primality
+-----------
+素数性(primality)をテストする手続きはO(√n)で以下の通りになる
+これは，nが素数でなければ，√n以下の除数（divisor）を持つのを利用している
+```
+(define (smallest-divisior n)
+  (find-divisor n 2))
+
+(define (divides? a b)
+  (= (remainder b a) 0))
+
+(define (square x)
+  (* x x))
+
+(define (find-divisor n test-divisor )
+  (cond ((> (square test-divisor) n) n)
+        ((divides? test-divisor n) test-divisor)
+        (else (find-divisor n (+ test-divisor 1)))
+  ))
+
+(define (prime? n)
+  (= n (smallest-divisior  n)))
+```
+
+O(log(n))でのprimalityを求める手続きはFermat(フェルマー)
+の定理を使う．これは以下の式を利用したものある．
+```
+n is prime
+a < n | aは整数
+
+a^n ≡ a (mod n)
+```
+この式は，「`a^nをnで割った余り`は，`aをnで割った余り`と合同（congruent）である」という意味である．
+また，`a<n`より，`a/nは0であまりは0`である．
+
+したがって，
+```
+a^n mod n =　a
+であれば，素数の確立があるといえる
+a^n mod n != a
+であれば，素数ではない．
+```
+
