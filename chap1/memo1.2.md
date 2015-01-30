@@ -199,7 +199,7 @@ n = log2(a)となる．従って，ステップ数がlog(n)となる．
 
 ```
 
-1.2.5 Great Common divisor 
+1.2.5 Great Common divisor
 -------
 great common divisor （最大公約数）は整数a,bが合ったとき，
 両方の値を剰余0で割り切れる最大のdivisor(約数)を求める事である．
@@ -254,3 +254,22 @@ a^n mod n != a
 であれば，素数ではない．
 ```
 
+**注意
+もし，random関数をgauchで使いたい場合は
+
+```
+(use math.mt-random)
+(define m (make <mersenne-twister> :seed (sys-time)))
+(mt-random-integer m 1000)
+(define (random n) (mt-random-integer m n))
+```
+を使用すること．
+
+また，`runtime`を利用したい場合は
+```
+(define (runtime)
+    (use srfi-11)
+    (let-values (((a b) (sys-gettimeofday)))
+    (+ (* a 1000000) b)))
+```
+を使用すればよい
