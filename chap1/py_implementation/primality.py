@@ -20,6 +20,8 @@ def is_prime(n):
     True
     >>> is_prime(27644437)
     True
+    >>> is_prime(1105) #carmicheal number
+    False
     """
     return smallest_divisor(n) == n
 
@@ -54,4 +56,3 @@ def non_recursive_find_divisor(n, test_divisor):
 if __name__ == '__main__':
     pass
 
-[]

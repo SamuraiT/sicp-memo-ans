@@ -26,14 +26,17 @@ from random import randint
 def main():
     pass
 
-def is_prime(n, times=10):
+def is_prime(n, times=20):
     """
     >>> is_prime(10)
     False
     >>> is_prime(17)
     True
+    >>> is_prime(1105) #carmicheal number
+    False
     >>> is_prime(27644437)
     True
+
     """
     for i in range(times):
         if fermat_test(n) is False:
