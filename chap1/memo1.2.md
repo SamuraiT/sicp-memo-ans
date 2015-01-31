@@ -235,6 +235,8 @@ gcd(a, b) = gcd(b, a%b)
   (= n (smallest-divisior  n)))
 ```
 
+Fermat
+-------
 O(log(n))でのprimalityを求める手続きはFermat(フェルマー)
 の定理を使う．これは以下の式を利用したものある．
 ```
@@ -253,7 +255,33 @@ a^n mod n =　a
 a^n mod n != a
 であれば，素数ではない．
 ```
+以下，schemeでの実装(処理系Gauchを利用)
+```
+(use math.mt-random)
+(define m (make <mersenne-twister> :seed (sys-time)))
+(mt-random-integer m 1000)
+(define (random n) (mt-random-integer m n))
 
+(define (square x) (* x x))
+
+(define (expmod base exp m)
+  (cond ((= exp 0) 1)
+        ((even? exp)
+         (remainder (square (expmod base (/ exp 2) m))
+m)) (else
+         (remainder (* base (expmod base (- exp 1) m))
+                    m))))
+
+(define (fermat-test n)
+  (define (try-it a)
+    (= (expmod a n n) a))
+  (try-it (+ 1 (random (- n 1)))))
+
+(define (fast-prime? n times)
+  (cond ((= times 0) #t)
+        ((fermat-test n) (fast-prime? n (- times 1)))
+        (else #f)))
+```
 **注意
 もし，random関数をgauchで使いたい場合は
 
