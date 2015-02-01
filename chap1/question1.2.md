@@ -488,3 +488,14 @@ applicative-order-evaluationは引数を受け取るたびに，式（mod）を�
 2
 ```
 
+exercise 1.2.1
+--------------
+results:
+```
+> (smallest-divisior 199)
+199
+> (smallest-divisior 1999)
+1999
+> (smallest-divisior 19999)
+7
+```
