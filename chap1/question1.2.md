@@ -499,3 +499,86 @@ results:
 > (smallest-divisior 19999)
 7
 ```
+
+exercise 1.22
+------------
+
+(runtime)を利用するために，この問題では処理系gauchを利用する
+```
+(define (smallest-divisior n)
+  (find-divisor n 2))
+
+(define (divides? a b)
+  (= (remainder b a) 0))
+
+(define (square x)
+  (* x x))
+
+(define (find-divisor n test-divisor )
+  (cond ((> (square test-divisor) n) n)
+        ((divides? test-divisor n) test-divisor)
+        (else (find-divisor n (+ test-divisor 1)))
+  ))
+
+(define (prime? n)
+  (= n (smallest-divisior  n)))
+
+(define (runtime)
+    (use srfi-11)
+    (let-values (((a b) (sys-gettimeofday)))
+    (+ (* a 1000000) b)))
+
+(define (search-for-primes n)
+  (define (inc-by-odd adder num)
+    (+ (* adder 2) 1 num))
+  (define (search-for-prime n counter adder)
+    (define prime-candidate (inc-by-odd adder n))
+    (define start (runtime))
+    (if (not (= counter 3))
+        (cond ((prime? prime-candidate)
+                (display "prime: ")
+                (display prime-candidate)
+                (display " *** ")
+                (display (- (runtime) start))
+                (newline)
+                (search-for-prime n (+ 1 counter) (+ 1 adder)))
+              (else (search-for-prime n counter (+ 1 adder)))
+          )
+        )
+    )
+
+  (search-for-prime n 0 0)
+)
+```
+結果は通りとなる．
+```
+gosh> (search-for-primes 1000)
+prime: 1009 *** 21
+prime: 1013 *** 20
+prime: 1019 *** 20
+#<undef>
+gosh> (search-for-primes 10000)
+prime: 10007 *** 53
+prime: 10009 *** 26
+prime: 10037 *** 25
+#<undef>
+gosh> (search-for-primes 100000)
+prime: 100003 *** 136
+prime: 100019 *** 107
+prime: 100043 *** 107
+#<undef>
+gosh> (search-for-primes 1000000)
+prime: 1000003 *** 286
+prime: 1000033 *** 265
+prime: 1000037 *** 243
+#<undef>
+```
+`prime?`のアルゴリズムはO(√n)で，
+nが10倍されるごとに計算量は√10倍増えるはずである．
+以下，それを考察する．
+
+まず`√10= 3.1622776601683795`である．
+よって，nが10倍されるごとに大体3倍増えれば良い事になる．
+ばらつきがあるものの，大体３倍程度の増加と見られる．
+
+
