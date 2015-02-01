@@ -488,7 +488,7 @@ applicative-order-evaluationは引数を受け取るたびに，式（mod）を�
 2
 ```
 
-exercise 1.2.1
+exercise 1.21
 --------------
 results:
 ```
