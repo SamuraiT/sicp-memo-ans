@@ -117,7 +117,7 @@ Newton’s method(Newton法):
 √xのxをradicand（被開平数）という
 
 
-```
+```scheme
 (define (next-guess y x)
     (average (Q y x) y))
 
@@ -156,7 +156,7 @@ Newton’s method(Newton法):
 
 ```
 
-```
+```scheme
 (define (sqrt-iter guess x)
   (if (good-enough? guess x)
       guess
@@ -199,7 +199,7 @@ boudn variableに対して，手続きのscope内で束縛されていない変�
 #### Internal definition and Block structure(内部定義とブロック構造)
 
 今までは以下のように分けて手続きを定義してきた
-```
+```scheme
 (define (sqrt x)
   (sqrt-iter 1.0 x))
 (define (sqrt-iter guess x)
@@ -220,7 +220,7 @@ boudn variableに対して，手続きのscope内で束縛されていない変�
 手続きを内部定義すると以下のようになる．このように定義をネストさせる構造をブロック構造(Block Structure)と呼ぶ．
 さらに，今まではxを書くsubprocesureの引数として取っていたのをsqrt内で束縛し，subprocedureからは自由変数と見せる事で引数として取る必要をなくした．こうすることでより単純化出来る．このような方法をlexical scoping or static scoping(静的スコープ)と呼ぶ．
 
-```
+```scheme
 (define (sqrt x)
     (define (square x)(* x x))
     (define (average x y)(/ (+ x y) 2))

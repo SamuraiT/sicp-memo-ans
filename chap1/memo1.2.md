@@ -21,7 +21,7 @@ figure 1.3である．
 次に，6!は1*2*3*4*5*6と1からnまでの積(product)で表現出来る．
 そこで，積とカウンターを使って表現してみる．
 
-```
+```scheme
 counter = product = 1
 loop until counter > 6
     product = product * counter
@@ -93,7 +93,7 @@ b <- a
 六回目のbは8なので，fib(n=6)のときb(=8)を返せば良い．
 これをlispで表すと
 
-```
+```scheme
 (define (fib n)
     (define (iter a b counter)
       (if (= counter 0)
@@ -164,7 +164,7 @@ b^n = b * b^n-1
 ```
 なので，
 
-```
+```scheme
 (define (expt b n)
   (if (= n 0)
       1
@@ -215,7 +215,7 @@ gcd(a, b) = gcd(b, a%b)
 -----------
 素数性(primality)をテストする手続きはO(√n)で以下の通りになる
 これは，nが素数でなければ，√n以下の除数（divisor）を持つのを利用している
-```
+```scheme
 (define (smallest-divisior n)
   (find-divisor n 2))
 
@@ -256,7 +256,7 @@ a^n mod n != a
 であれば，素数ではない．
 ```
 以下，schemeでの実装(処理系Gauchを利用)
-```
+```scheme
 (use math.mt-random)
 (define m (make <mersenne-twister> :seed (sys-time)))
 (mt-random-integer m 1000)
@@ -285,7 +285,7 @@ m)) (else
 **注意
 もし，random関数をgauchで使いたい場合は
 
-```
+```scheme
 (use math.mt-random)
 (define m (make <mersenne-twister> :seed (sys-time)))
 (mt-random-integer m 1000)
@@ -294,7 +294,7 @@ m)) (else
 を使用すること．
 
 また，`runtime`を利用したい場合は
-```
+```scheme
 (define (runtime)
     (use srfi-11)
     (let-values (((a b) (sys-gettimeofday)))

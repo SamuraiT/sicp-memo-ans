@@ -3,7 +3,7 @@ Q1.1
  Below is a sequence of expressions. What is the result printed by the interpreter in response to each expression? Assume that the sequence is to be evaluated in the order in which it is presented.
 
 
-```
+```scheme
 10 -> 10
 (+ 5 3 4) -> 12
 (- 9 1) -> 8
@@ -13,7 +13,7 @@ Q1.1
 (define b (+ a 1)) -> (b-> a+1) b -> 4
 (+ a b (* a b)) -> 19
 (= a b) -> #f
-(if (and (> b a) (< b (* a b)))  
+(if (and (> b a) (< b (* a b)))
 b
     a)
 -> 4
@@ -21,7 +21,7 @@ b
 (cond ((= a 4) 6)
       ((= b 4) (+ 6 7 a))
       (else 25))
--> 16 
+-> 16
 (+ 2 (if (> b a) b a))
 -> 6
 
@@ -36,7 +36,7 @@ b
 Q1.2
 ----
 
-```
+```scheme
 (/ (+ 5 4 (- 2 (- 3 (+ 6 (/ 4 5))))) (* 3 (- 6 2) (- 2 7)))
 -> -37/150
 ```
@@ -47,7 +47,7 @@ Q1.3
 Define a procedure that takes three numbers as arguments and returns the sum of the squares of the two larger numbers.
 
 
-```
+```scheme
 (define (dist x y)(+ (sqr x) (sqr y)))
 (define (max_dist x y z)
     (if (> x y)
@@ -99,7 +99,7 @@ if predicate is true, steatement of if only evaluates true-clause.
 Q1.7
 -----
 
-```
+```scheme
 e.g of fail
 (sqrt 4444)
 66.66333325000188)
@@ -117,7 +117,7 @@ math.sqrt(10000000000000)
 stopped
 ```
 
-```
+```scheme
 (define (sqrt-iter guess x prev-guess)
   (if (good-enough? guess prev-guess)
       guess
@@ -151,7 +151,7 @@ stopped
 もっと賢い奇麗な方法としてgood-enough?だけの変更もある．
 これは，次にimproveしても同じ値であれば停止するようにしている．
 
-```
+```scheme
 (define (sqrt-iter guess x)
   (if (good-enough? guess x)
       guess
@@ -177,7 +177,7 @@ stopped
 Q1.8
 cube root(立方根) is denoted as x^(1/3)
 
-```
+```scheme
 (define (cube-iter guess x)
   (if (good-enough? guess x)
       guess
@@ -205,11 +205,11 @@ cube root(立方根) is denoted as x^(1/3)
 ので，0.0001以内の差とした
 他の回答としては
 
-```
- (define (improve guess x) 
-   (average3 (/ x (square guess)) guess guess)) 
-  
- (define (average3 x y z) 
+```scheme
+ (define (improve guess x)
+   (average3 (/ x (square guess)) guess guess))
+
+ (define (average3 x y z)
    (/ (+ x y z) 3))
 ```
 
