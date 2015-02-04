@@ -581,4 +581,243 @@ nが10倍されるごとに計算量は√10倍増えるはずである．
 よって，nが10倍されるごとに大体3倍増えれば良い事になる．
 ばらつきがあるものの，大体３倍程度の増加と見られる．
 
+exercise 1.23
+-------------
+smallest-divisorでfind-divisorは2の後は奇数のみを考慮すべきなので，
+```scheme
+(next test-divisor)は
+if 2 -> 3
+else test-divisor + 2
+を返せばよい
+```
 
+```scheme
+(define (smallest-divisior n)
+  (find-divisor n 2))
+
+(define (divides? a b)
+  (= (remainder b a) 0))
+
+(define (square x)
+  (* x x))
+
+(define (find-divisor n test-divisor )
+  (cond ((> (square test-divisor) n) n)
+        ((divides? test-divisor n) test-divisor)
+        (else (find-divisor n (next test-divisor)))
+  ))
+
+(define (next n)
+  (if (= n 2)
+      3
+    (+ n 2))
+  )
+(define (prime? n)
+  (= n (smallest-divisior  n)))
+
+(define (runtime)
+    (use srfi-11)
+    (let-values (((a b) (sys-gettimeofday)))
+    (+ (* a 1000000) b)))
+
+(define (search-for-primes n)
+  (define (inc-by-odd adder num)
+    (+ (* adder 2) 1 num))
+  (define (search-for-prime n counter adder)
+    (define prime-candidate (inc-by-odd adder n))
+    (define start (runtime))
+    (if (not (= counter 3))
+        (cond ((prime? prime-candidate)
+                (display "prime: ")
+                (display prime-candidate)
+                (display " *** ")
+                (display (- (runtime) start))
+                (newline)
+                (search-for-prime n (+ 1 counter) (+ 1 adder)))
+              (else (search-for-prime n counter (+ 1 adder)))
+          )
+        )
+    )
+
+  (search-for-prime n 0 0)
+)
+```
+結果は以下の通りである．
+```scheme
+gosh> (search-for-primes 1000)
+prime: 1009 *** 30
+prime: 1013 *** 11
+prime: 1019 *** 8
+#<undef>
+gosh> (search-for-primes 10000)
+prime: 10007 *** 44
+prime: 10009 *** 20
+prime: 10037 *** 18
+#<undef>
+gosh> (search-for-primes 100000)
+prime: 100003 *** 115
+prime: 100019 *** 68
+prime: 100043 *** 64
+#<undef>
+gosh> (search-for-primes 1000000)
+prime: 1000003 *** 292
+prime: 1000033 *** 230
+prime: 1000037 *** 232
+#<undef>
+```
+前回の結果はこちら
+```scheme
+gosh> (search-for-primes 1000)
+prime: 1009 *** 21
+prime: 1013 *** 20
+prime: 1019 *** 20
+#<undef>
+gosh> (search-for-primes 10000)
+prime: 10007 *** 53
+prime: 10009 *** 26
+prime: 10037 *** 25
+#<undef>
+gosh> (search-for-primes 100000)
+prime: 100003 *** 136
+prime: 100019 *** 107
+prime: 100043 *** 107
+#<undef>
+gosh> (search-for-primes 1000000)
+prime: 1000003 *** 286
+prime: 1000033 *** 265
+prime: 1000037 *** 243
+#<undef>
+```
+
+前回と比較するとステップが確かに多少小さくなっているが，半分まではいかないように見られる．
+
+###### 考察
+理由としては，O(√n)だと/2は定数で，nが大きくならないと余り意味をなさない可能性がある．
+n~=1000000にしろ1000ステップ程度しか必要ない．それが500になっても計算速度的にあまりかわないと思われる．
+もう少し大きな値だと違いが出るかもしれない．
+
+そこで，値を大きくしてみた
+```scheme
+;; nextを使った場合
+gosh> (search-for-primes 10000)
+prime: 10007 *** 39
+prime: 10009 *** 21
+prime: 10037 *** 21
+#<undef>
+gosh> (search-for-primes 100000)
+prime: 100003 *** 120
+prime: 100019 *** 76
+prime: 100043 *** 94
+#<undef>
+gosh> (search-for-primes 1000000)
+prime: 1000003 *** 164
+prime: 1000033 *** 137
+prime: 1000037 *** 138
+#<undef>
+gosh> (search-for-primes 10000000)
+prime: 10000019 *** 505
+prime: 10000079 *** 494
+prime: 10000103 *** 494
+#<undef>
+gosh> (search-for-primes 100000000)
+prime: 100000007 *** 1731
+prime: 100000037 *** 1527
+prime: 100000039 *** 1262
+#<undef>
+gosh> (search-for-primes 1000000000)
+prime: 1000000007 *** 4415
+prime: 1000000009 *** 3258
+prime: 1000000021 *** 3116
+#<undef>
+gosh> (search-for-primes 10000000000)
+prime: 10000000019 *** 13114
+prime: 10000000033 *** 16093
+prime: 10000000061 *** 13632
+#<undef>
+gosh> (search-for-primes 100000000000)
+prime: 100000000003 *** 37946
+prime: 100000000019 *** 39128
+prime: 100000000057 *** 39868
+#<undef>
+gosh> (search-for-primes 1000000000000)
+prime: 1000000000039 *** 120502
+prime: 1000000000061 *** 120939
+prime: 1000000000063 *** 132627
+#<undef>
+gosh> (search-for-primes 10000000000000)
+prime: 10000000000037 *** 364994
+prime: 10000000000051 *** 315310
+prime: 10000000000099 *** 377923
+#<undef>
+gosh> (search-for-primes 100000000000000)
+prime: 100000000000031 *** 1213539
+prime: 100000000000067 *** 1182575
+prime: 100000000000097 *** 1258980
+```
+古いバージョンの場合
+```scheme
+gosh> (search-for-primes 10000)
+prime: 10007 *** 77
+prime: 10009 *** 32
+prime: 10037 *** 30
+#<undef>
+gosh> (search-for-primes 100000)
+prime: 100003 *** 158
+prime: 100019 *** 93
+prime: 100043 *** 92
+#<undef>
+gosh> (search-for-primes 1000000)
+prime: 1000003 *** 288
+prime: 1000033 *** 257
+prime: 1000037 *** 223
+#<undef>
+gosh> (search-for-primes 10000000)
+prime: 10000019 *** 881
+prime: 10000079 *** 695
+prime: 10000103 *** 640
+#<undef>
+gosh> (search-for-primes 100000000)
+prime: 100000007 *** 2472
+prime: 100000037 *** 1627
+prime: 100000039 *** 1669
+#<undef>
+gosh> (search-for-primes 1000000000)
+prime: 1000000007 *** 8216
+prime: 1000000009 *** 5620
+prime: 1000000021 *** 5130
+#<undef>
+gosh> (search-for-primes 10000000000)
+prime: 10000000019 *** 16116
+prime: 10000000033 *** 16893
+prime: 10000000061 *** 19742
+#<undef>
+gosh> (search-for-primes 100000000000)
+prime: 100000000003 *** 59237
+prime: 100000000019 *** 60923
+prime: 100000000057 *** 60863
+#<undef>
+gosh> (search-for-primes 1000000000000)
+prime: 1000000000039 *** 205850
+prime: 1000000000061 *** 175359
+prime: 1000000000063 *** 180902
+#<undef>
+gosh> (search-for-primes 10000000000000)
+prime: 10000000000037 *** 563074
+prime: 10000000000051 *** 581707
+prime: 10000000000099 *** 531112
+#<undef>
+gosh> (search-for-primes 100000000000000)
+prime: 100000000000031 *** 1681545
+prime: 100000000000067 *** 1745277
+prime: 100000000000097 *** 1651683
+#<undef>
+```
+値が大きくなるほど，1/2に近づいていることが分かる．よって，nextを使う事により
+ステップ数が半分になることが得られた．
+
+が，下記の解答が素晴らしい
+> We're seeing a clear improvement in the new procedure, but it's not quite as fast as we expected. The first thing that needs to be explained in this data is the fact that the first three values shows very little performance gain, the next three a little more, then fairly consistent results for the remaining data. I think this can be explained by other processes running on the computer. Measuring shorter runs of the procedure (those in the 100-500 millisecond range) is going to be much more sensitive to measurement error due to being interrupted by background processes. These errors will be a less significant proportion of the total run time for longer runs of the procedure.
+
+> We're also seeing that the procedure is only running approximately 1.85 times as fast, instead of the expected factor of 2. This may be explained by the fact that we replaced a primitive operation, (+ test-divisor 1), by a user-defined operation, (next test-divisor). Each time that user-defined operation is called, an extra if must be evaluated (to check if the input is 2). Other than this small discrepancy, I think the improvement is quite good for such a small change to the code.
+
+このURLから引用: [http://www.billthelizard.com/2010/02/sicp-exercise-123-improved-prime-test.html](http://www.billthelizard.com/2010/02/sicp-exercise-123-improved-prime-test.html)
