@@ -1,7 +1,7 @@
 Q1.9
 ----
 
-```
+```scheme
 (define (+ a b)
   (if (= a 0)
       b
@@ -15,7 +15,7 @@ Q1.9
 
 最初の手続きのsubstitution model:
 
-```
+```scheme
 (+ 4 5)
 (inc (+ 3 5))
 (inc (inc (+ 2 5)))
@@ -32,7 +32,7 @@ Q1.9
 
 二番目:
 
-```
+```scheme
 (+ 4 5)
 (+ 3 6)
 (+ 2 7)
@@ -46,7 +46,7 @@ Q1.9
 Q1.10
 -------
 
-```
+```scheme
 > (A 1 10)
 1024
 > (A 2 4)
@@ -77,7 +77,7 @@ Write a procedure that computes f by means of a recursive process. Write a proce
 
 recursive process
 
-```
+```scheme
 (define (f n)
 	(if (< n 3)
 		n
@@ -103,7 +103,7 @@ recursive process
 
 iterative process
 
-```
+```scheme
 (define (f n)
     (define (iter a b c counter)
       (if (< counter 3)
@@ -132,7 +132,7 @@ iterative processの考え方としては，もともとの木構造をよく見
 Q1.12
 -------
 
-```
+```scheme
 (define (pascal-triangle row col)
       (cond ((> col row) 0)
           ((< col 0) 0)
@@ -148,7 +148,7 @@ this counts num from 1 either for col and row.
 another answer by using pascals triangle equation.
 (binominal coeffient)
 
-```
+```scheme
 (define (factorial n)
   (fact-iter 1 1 n))
 (define (fact-iter product counter max-count)
@@ -193,7 +193,7 @@ http://www.kendyck.com/math/sicp/ex1-13.xml
 
 上記のサイトを参考．
 
-```
+```scheme
 Fib(0) = 0
 Fib(n) = Fib(n-1) + Fib(n+2)
        = (φ^n - ψ^n) / √5
@@ -266,7 +266,7 @@ Q1.15
 
 a. 5回．
 
-```
+```scheme
 (sine 12.15)
 (p (sine 4.05))
 (p (p (sine 1.35)))
@@ -306,7 +306,7 @@ Q1.16
 --------
 
 
-```
+```scheme
 (define (square x) (* x x))
 (define (fast-expt b n)
   (cond ((= n 0) 1)
@@ -316,7 +316,7 @@ Q1.16
 を反復再帰にすればよい．ヒントとしてnが偶数（even）のとき，$b^n = (b^2)^{n/2}$が与えられている．
 つまり，$b^n$は低(base)を$b^2$として$n/2$乗したものと同じになる．
 従って，次のように解ける．
-```
+```scheme
 (define (square x) (* x x))
 
 (define (even? x)
@@ -341,7 +341,7 @@ else -> a*b = a*(b-1)+a
 
 上記を表現すれば良いだけ
 
-```
+```scheme
 (define (double x) (+ x x))
 (define (halve x) (/ x 2))
 (define (even? x)
@@ -363,6 +363,7 @@ else -> a*b = a*(b-1)+a
 
 Q1.18
 -------
+```scheme
 (define (double x) (+ x x))
 (define (halve x) (/ x 2))
 (define (even? x)
@@ -377,6 +378,7 @@ Q1.18
     )
     (iter ans a b)
   )
+```
 
 Q1.19
 ------
@@ -385,7 +387,7 @@ Q1.19
 つまり，Transformerである．ここで，
 Tpqが特殊なはp=0, q=1といっているまた，そのとき
 
-```
+```scheme
 a = a + b
 b = a
 行列で表すと
@@ -434,7 +436,7 @@ p = q^2 + p^2
 Q1.20
 -----
 gcdのプロセスをnormal-order-evaluationで処理した場合を図示
-```
+```scheme
 (define (gcd a b)
   (if (= b 0)
       a
@@ -491,7 +493,7 @@ applicative-order-evaluationは引数を受け取るたびに，式（mod）を�
 exercise 1.21
 --------------
 results:
-```
+```scheme
 > (smallest-divisior 199)
 199
 > (smallest-divisior 1999)
@@ -504,7 +506,7 @@ exercise 1.22
 ------------
 
 (runtime)を利用するために，この問題では処理系gauchを利用する
-```
+```scheme
 (define (smallest-divisior n)
   (find-divisor n 2))
 
@@ -550,8 +552,8 @@ exercise 1.22
   (search-for-prime n 0 0)
 )
 ```
-結果は通りとなる．
-```
+結果は以下の通りとなる．
+```scheme
 gosh> (search-for-primes 1000)
 prime: 1009 *** 21
 prime: 1013 *** 20
