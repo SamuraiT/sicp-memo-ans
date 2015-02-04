@@ -823,3 +823,162 @@ prime: 100000000000097 *** 1651683
 > We're also seeing that the procedure is only running approximately 1.85 times as fast, instead of the expected factor of 2. This may be explained by the fact that we replaced a primitive operation, (+ test-divisor 1), by a user-defined operation, (next test-divisor). Each time that user-defined operation is called, an extra if must be evaluated (to check if the input is 2). Other than this small discrepancy, I think the improvement is quite good for such a small change to the code.
 
 このURLから引用: [http://www.billthelizard.com/2010/02/sicp-exercise-123-improved-prime-test.html](http://www.billthelizard.com/2010/02/sicp-exercise-123-improved-prime-test.html)
+
+exercise 1.24
+------------
+```scheme
+(use math.mt-random)
+(define m (make <mersenne-twister> :seed (sys-time)))
+(mt-random-integer m 1000)
+(define (random n) (mt-random-integer m n))
+
+(define (square x) (* x x))
+
+(define (expmod base exp m)
+  (cond ((= exp 0) 1)
+        ((even? exp)
+         (remainder (square (expmod base (/ exp 2) m))
+m)) (else
+         (remainder (* base (expmod base (- exp 1) m))
+                    m))))
+
+(define (fermat-test n)
+  (define (try-it a)
+    (= (expmod a n n) a))
+  (try-it (+ 1 (random (- n 1)))))
+
+(define (fast-prime? n times)
+  (cond ((= times 0) #t)
+        ((fermat-test n) (fast-prime? n (- times 1)))
+        (else #f)))
+
+(define (runtime)
+    (use srfi-11)
+    (let-values (((a b) (sys-gettimeofday)))
+    (+ (* a 1000000) b)))
+
+(define (search-for-primes n)
+  (define (inc-by-odd adder num)
+    (+ (* adder 2) 1 num))
+  (define (search-for-prime n counter adder)
+    (define prime-candidate (inc-by-odd adder n))
+    (define start (runtime))
+    (if (not (= counter 3))
+        (cond ((fast-prime? prime-candidate 7)
+                (display "prime: ")
+                (display prime-candidate)
+                (display " *** ")
+                (display (- (runtime) start))
+                (newline)
+                (search-for-prime n (+ 1 counter) (+ 1 adder)))
+              (else (search-for-prime n counter (+ 1 adder)))
+          )
+        )
+    )
+
+  (search-for-prime n 0 0)
+)
+```
+結果は以下の通りである
+```scheme
+gosh>  (search-for-primes 10000)
+prime: 10007 *** 144
+prime: 10009 *** 188
+prime: 10037 *** 110
+#<undef>
+gosh>  (search-for-primes 100000)
+prime: 100003 *** 211
+prime: 100019 *** 221
+prime: 100043 *** 138
+#<undef>
+gosh>  (search-for-primes 1000000)
+prime: 1000003 *** 188
+prime: 1000033 *** 297
+prime: 1000037 *** 307
+#<undef>
+gosh>  (search-for-primes 10000000)
+prime: 10000019 *** 9304
+prime: 10000079 *** 333
+prime: 10000103 *** 284
+#<undef>
+gosh>  (search-for-primes 100000000)
+prime: 100000007 *** 289
+prime: 100000037 *** 232
+prime: 100000039 *** 233
+#<undef>
+gosh>  (search-for-primes 1000000000)
+prime: 1000000007 *** 268
+prime: 1000000009 *** 256
+prime: 1000000021 *** 254
+#<undef>
+gosh>  (search-for-primes 10000000000)
+prime: 10000000019 *** 731
+prime: 10000000033 *** 493
+prime: 10000000061 *** 413
+#<undef>
+gosh>  (search-for-primes 100000000000)
+prime: 100000000003 *** 549
+prime: 100000000019 *** 582
+prime: 100000000057 *** 1069
+#<undef>
+gosh>  (search-for-primes 1000000000000)
+prime: 1000000000039 *** 491
+prime: 1000000000061 *** 497
+prime: 1000000000063 *** 494
+#<undef>
+gosh>  (search-for-primes 10000000000000)
+prime: 10000000000037 *** 560
+prime: 10000000000051 *** 553
+prime: 10000000000099 *** 548
+#<undef>
+gosh>  (search-for-primes 100000000000000)
+prime: 100000000000031 *** 905
+prime: 100000000000067 *** 804
+prime: 100000000000097 *** 6140
+```
+
+checkする回数を15 -> 7にした場合．
+```scheme
+gosh>
+(search-for-primes 10000)
+prime: 10007 *** 100
+prime: 10009 *** 79
+prime: 10037 *** 66
+#<undef>
+gosh> (search-for-primes 100000)
+prime: 100003 *** 75
+prime: 100019 *** 63
+prime: 100043 *** 62
+#<undef>
+gosh> (search-for-primes 1000000)
+prime: 1000003 *** 123
+prime: 1000033 *** 89
+prime: 1000037 *** 91
+gosh> (search-for-primes 100000000000000)
+prime: 100000000000031 *** 299
+prime: 100000000000067 *** 278
+prime: 100000000000097 *** 484
+```
+prime?を使った場合
+```scheme
+gosh> (search-for-primes 1000)
+prime: 1009 *** 21
+prime: 1013 *** 20
+prime: 1019 *** 20
+```
+比較した場合は，もちろんfast-primeの方が圧倒的に速いが
+log(n)/(√n)の比まではならない．１つの理由として，fast-primeは`O(t*log(n)) | t :testする回数t`
+であるからである．それでも多少大きいのは関数呼び出しなどが起因していると考えられる.
+
+また，fast-prime?のorder of growthを見ると
+```
+10000 -> 100000000000000
+log(10000000000)/log(10000) = 3倍
+```
+よって，3倍程度増えているので，logarithmaticに増えていると言える．
+
+
+
+10倍ごとに約log(10)=2.3倍あがっていることが見受けられる
+
+
