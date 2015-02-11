@@ -1033,5 +1033,7 @@ exercise 1.26
 2回行ってしまうため，O(n)に戻ってしまう．（再帰的に呼ばれるものが2回，4回と増えていく）
 
 この図を見るとより意味がわかる
-![](http://3.bp.blogspot.com/_PnLYRqe0k9g/S4RADXPrAXI/AAAAAAAAARk/yJESpD2zwhQ/s1600-h/expmod-mult-diagram.png)
+
+![](http://3.bp.blogspot.com/_PnLYRqe0k9g/S4RADXPrAXI/AAAAAAAAARk/yJESpD2zwhQ/s1600/expmod-mult-diagram.png)
+
 [sicp-exercise-126-explicit.htmlより参照](http://www.billthelizard.com/2010/02/sicp-exercise-126-explicit.html)
