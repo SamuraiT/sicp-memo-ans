@@ -7,18 +7,6 @@ Distributed under the GNU General Public License at
 gnu.org/licenses/gpl.html.
 """
 
-
-def main():
-    pass
-
-#! /usr/bin/env python
-# coding: utf-8
-"""
-Copyright 2014 Tatsuro Yasukawa.
-
-Distributed under the GNU General Public License at
-gnu.org/licenses/gpl.html.
-"""
 import sys
 sys.setrecursionlimit(1000000)
 from random import randint
