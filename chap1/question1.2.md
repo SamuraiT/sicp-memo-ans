@@ -981,4 +981,48 @@ log(10000000000)/log(10000) = 3倍
 
 10倍ごとに約log(10)=2.3倍あがっていることが見受けられる
 
+exercise 1.25
+-----------
 
+```scheme
+(use math.mt-random)
+(define m (make <mersenne-twister> :seed (sys-time)))
+(mt-random-integer m 1000)
+(define (random n) (mt-random-integer m n))
+
+(define (square x) (* x x))
+
+(define (even? x)
+  (= (remainder x 2) 0))
+
+(define (fast-expt b n)
+  (define (iter a b n)
+    (cond ((= n 0) a)
+          ((even? n) (iter a (square b) (/ n 2)))
+          (else (iter (* a b) b (- n 1) )))
+          )
+  (iter 1 b n))
+
+(define (expmod base exp m)
+  (remainder (fast-expt base exp) m))
+
+(define (fermat-test n)
+  (define (try-it a)
+    (= (expmod a n n) a))
+  (try-it (+ 1 (random (- n 1)))))
+
+(define (fast-prime? n times)
+  (cond ((= times 0) #t)
+        ((fermat-test n) (fast-prime? n (- times 1)))
+        (else #f)))
+
+```
+expmodを変更したらfast prime testerのように高速ではなくなった．
+その理由は
+expmodであれば，再帰的に得られたexpmodに2乗か，base倍し，その値のremainderを取り，値はm以下になる．
+それを再帰的に繰り返す．よって，operandの値は比較的小さくすむ．
+
+対して，fast-exptを利用する場合は，入力nの値が大きいと，operandが多くなる．したがって，値を格納しているサイズを変更しないといけなくなる．
+e.g int -> longそのため，値が大きくなると計算量がかかり，遅くなってしまう．
+
+今回の例は，log(n) でも対象となる値が大きくなれば，値の変換等により計算不能になることである．
