@@ -1037,3 +1037,88 @@ exercise 1.26
 ![](http://3.bp.blogspot.com/_PnLYRqe0k9g/S4RADXPrAXI/AAAAAAAAARk/yJESpD2zwhQ/s1600/expmod-mult-diagram.png)
 
 [sicp-exercise-126-explicit.htmlより参照](http://www.billthelizard.com/2010/02/sicp-exercise-126-explicit.html)
+
+exercise 1.27
+----------
+tests whether an is congruent to a modulo n for every a < n
+algo
+```python
+def is_congruent(n):
+  for a in 2..n-1
+    if a^n mod n != a:
+      return false
+  return true
+```
+以下，scheme
+```scheme
+(define (square x) (* x x))
+(define (even? x)
+  (= (remainder x 2) 0))
+
+(define (expmod base exp m)
+  (cond ((= exp 0) 1)
+        ((even? exp)
+         (remainder (square (expmod base (/ exp 2) m)) m))
+         (else (remainder (* base (expmod base (- exp 1) m)) m))))
+
+(define (congruent? n)
+    (define (try-it a)
+      (cond ((= a (- n 1)) #t)
+            ((not (= (expmod a n n) a)) #f)
+            (else (try-it (+ a 1)))
+        )
+      )
+  (try-it 2)
+  )
+
+(congruent? 561)
+(congruent? 1105)
+(congruent? 1729)
+(congruent? 2465)
+(congruent? 2821)
+(congruent? 6601)
+```
+結果は以下の通りになり，Carmichael　number nはa^n is congruent a modulo n for all a < n.
+carmicheal number n は全てのa < nに対してnをほうとしてa^n はaに合同であることがわかる．
+```
+> (congruent? 561)
+#t
+> (congruent? 561)
+#t
+> (congruent? 1105)
+#t
+> (congruent? 1729)
+#t
+> (congruent? 2465)
+#t
+> (congruent? 2821)
+#t
+> (congruent? 6601)
+#t
+> (congruent? 2)
+#f
+> (congruent? 4)
+#f
+> (congruent? 8)
+#f
+> (congruent? 3)
+#t
+````
+
+better solution
+
+```
+fermat-testを再利用し，fermat-fullでのロジックも見やすく成っている．
+fermat-testが通らなければ，というふうに
+
+(define (fermat-test n a)
+   (= (expmod a n n) a))
+
+(define (fermat-full n)
+   (define (iter a)
+     (cond ((= a 1) #t)
+           ((not (fermat-test n a)) #f)
+           (else (iter (- a 1)))))
+   (iter (- n 1)))
+
+```
