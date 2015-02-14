@@ -1122,3 +1122,78 @@ fermat-testが通らなければ，というふうに
    (iter (- n 1)))
 
 ```
+exercise 1.28
+------------
+miler rabin test
+a^(n-1) ≡ 1 modulo n
+
+```python
+test n
+if a^(n - 1) ≡ modulo n
+
+if even?
+  if num^2 moudlo n = 1 s.t num != n or n-1
+    num is not prime
+```
+
+```scheme
+(use math.mt-random)
+(define m (make <mersenne-twister> :seed (sys-time)))
+(mt-random-integer m 1000)
+(define (random n) (mt-random-integer m n))
+
+(define (square x) (* x x))
+(define (not-one? n)
+  (= n 1))
+(define (different? n x)
+  (= n x))
+(define (nontrivial-square-root? n m)
+  (= (remainder (square m) m) 1))
+
+(define (square-check n m)
+  (if (and (not-one? n) (different? n (- m 1)) (nontrivial-square-root? n m))
+  0
+  (remainder (square n) m)))
+
+
+(define (expmod base exp m)
+  (cond ((= exp 0) 1)
+        ((even? exp)
+         (square-check (expmod base (/ exp 2) m) m))
+        (else (remainder (* base (expmod base (- exp 1) m)) m))))
+
+(define (miler-rabin-test n)
+  (define (try-it a)
+    (= (expmod a (- n 1) n) 1))
+  (try-it (+ 1 (random (- n 1)))))
+
+(define (fast-prime? n times)
+  (cond ((= times 0) #t)
+        ((miler-rabin-test n) (fast-prime? n (- times 1)))
+        (else #f)))
+(define (prime? n)
+  (fast-prime? n 10))
+
+
+(prime? 561)
+(prime? 1105)
+(prime? 1729)
+(prime? 2465)
+(prime? 2821)
+(prime? 6601)
+```
+結果
+```
+(prime? 561)
+#f
+(prime? 1105)
+#f
+(prime? 1729)
+#f
+(prime? 2465)
+#f
+(prime? 2821)
+#f
+gosh> (prime? 6601)
+#f
+```
